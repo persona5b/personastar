@@ -353,6 +353,23 @@ function spawnWelcomeParticles() {
 }
 
 function enterArchive() {
+   function logout() {
+  audio.playClick();
+  session = null;
+  try {
+    sessionStorage.removeItem(SESSION_KEY);   // hapus sesi login
+    sessionStorage.removeItem(JA_STAGE_KEY);  // reset progres tahap J.A.
+  } catch (e) {}
+  document.body.classList.remove("ja-mode");
+  document.querySelector(".orb-ja").classList.remove("unlocked");
+  sessionChip.textContent = "CLEARANCE: —";
+  sessionChip.style.color = "";
+  loginFeedback.className = "login-feedback";
+  loginFeedback.textContent = "";
+  nobelInput.value = "";
+  showView("login");        // balik ke layar login
+  nobelInput.focus();
+}
   sessionChip.textContent = "CLEARANCE: " + (session ? session.name.toUpperCase() : "—");
   if (session && session.owner) sessionChip.style.color = "#e08a97";
 
@@ -674,6 +691,8 @@ function init() {
   starfield.init();
   initLogin();
   initOrbs();
+soundToggle.addEventListener("click", () => audio.toggle());
+$("btn-logout").addEventListener("click", logout);
 
   soundToggle.addEventListener("click", () => audio.toggle());
 
