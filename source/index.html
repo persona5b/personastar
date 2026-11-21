@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PERSONA — Five Faces. One Mind.</title>
+  <meta name="description" content="Classified archive: five faces, one mind. Authorized personnel only.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='3' fill='%239fc4ff'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%239fc4ff' stroke-opacity='.45' stroke-width='1'/%3E%3Ccircle cx='27' cy='9' r='1.6' fill='%23e0455f'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Atmospheric background layers ===== -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="nebula nebula-a" aria-hidden="true"></div>
+  <div class="nebula nebula-b" aria-hidden="true"></div>
+  <div class="nebula nebula-c" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanlines" id="scanlines" aria-hidden="true"></div>
+  <div class="ja-flash" id="ja-flash" aria-hidden="true"></div>
+  <div class="cinematic-dim" id="cinematic-dim" aria-hidden="true"></div>
+
+  <!-- ===== Audio (graceful fallback if files are absent) ===== -->
+  <audio id="audio-ambient" src="audio/ambient1.mp3" loop preload="none"></audio>
+  <audio id="audio-click" src="audio/click.mp3" preload="none"></audio>
+  <audio id="audio-ja" src="audio/ja_glitch.mp3" preload="none"></audio>
+
+  <!-- ===== Global sound toggle ===== -->
+  <button id="sound-toggle" class="sound-toggle" type="button" role="switch" aria-checked="false" aria-label="Toggle sound">
+    <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+      <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+      <path d="M18.2 5.8a9 9 0 0 1 0 12.4"/>
+    </svg>
+    <svg class="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+      <line x1="16" y1="9" x2="22" y2="15"/>
+      <line x1="22" y1="9" x2="16" y2="15"/>
+    </svg>
+    <span class="sound-label">SOUND OFF</span>
+  </button>
+
+  <!-- ===== View: LOGIN ===== -->
+  <section id="view-login" class="view view-login">
+    <div class="login-wrap">
+      <div class="login-panel glass" id="login-panel">
+        <div class="login-eyebrow">CLASSIFIED ARCHIVE // LEVEL 5</div>
+        <h1 class="login-title">PERSONA ARCHIVE</h1>
+        <p class="login-sub">AUTHORIZED PERSONNEL ONLY</p>
+        <div class="login-divider"></div>
+
+        <label class="field-label" for="nobel-input">ENTER YOUR NOBEL ACCESS CODE</label>
+        <div class="login-field">
+          <input id="nobel-input" type="password" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="8" placeholder="&#9679;&#9679;&#9679;&#9679;">
+          <button id="toggle-eye" class="icon-btn" type="button" aria-label="Reveal access code" aria-pressed="false">
+            <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 12s3.5-7 10-7c2 0 3.7.6 5.2 1.5M22 12s-3.5 7-10 7c-2 0-3.7-.6-5.2-1.5"/>
+              <line x1="4" y1="4" x2="20" y2="20"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="login-feedback" id="login-feedback" aria-live="polite"></div>
+
+        <button id="login-submit" class="btn-primary" type="button">
+          <span class="btn-label">AUTHENTICATE</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+        </button>
+        <p class="login-footnote">Clearance is logged. Unauthorized attempts are recorded.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== View: WELCOME ===== -->
+  <section id="view-welcome" class="view overlay-view hidden">
+    <div class="welcome-inner">
+      <div class="welcome-granted" id="welcome-granted">ACCESS GRANTED</div>
+      <h2 class="welcome-name" id="welcome-name">WELCOME, —.</h2>
+      <p class="welcome-line" id="welcome-line">Your presence has been acknowledged.</p>
+      <div class="welcome-particles" id="welcome-particles" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ===== View: MAIN ARCHIVE (constellation tree) ===== -->
+  <section id="view-archive" class="view hidden">
+    <header class="archive-header">
+      <div class="brand-mark">PERSONA <span>// ARCHIVE</span></div>
+      <div class="session-chip" id="session-chip">CLEARANCE: —</div>
+    </header>
+
+    <div class="archive-hero">
+      <h1 class="archive-title">PERSONA</h1>
+      <p class="archive-tagline">FIVE FACES. ONE MIND.</p>
+      <p class="archive-sub">Choose a face to know them.</p>
+    </div>
+
+    <section class="constellation" id="constellation" aria-label="Character hierarchy diagram">
+      <svg id="constellation-lines" aria-hidden="true"></svg>
+
+      <button class="orb orb-ja" data-id="ja" type="button" aria-label="Open J.A. dossier">
+        <span class="orb-core">
+          <span class="orb-name">J.A</span>
+          <span class="orb-label">THE AUTHOR</span>
+        </span>
+        <span class="orb-lock" id="orb-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="9" rx="2"/>
+            <path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+          </svg>
+          LOCKED
+        </span>
+      </button>
+
+      <button class="orb" data-id="fd" type="button" aria-label="Open F.D dossier">
+        <span class="orb-core">
+          <span class="orb-name">F.D</span>
+          <span class="orb-label">THE RESOLVE</span>
+        </span>
+      </button>
+
+      <button class="orb" data-id="oa" type="button" aria-label="Open O.A dossier">
+        <span class="orb-core">
+          <span class="orb-name">O.A</span>
+          <span class="orb-label">THE SCHOLAR</span>
+        </span>
+      </button>
+
+      <button class="orb" data-id="mm" type="button" aria-label="Open M.M dossier">
+        <span class="orb-core">
+          <span class="orb-name">M.M</span>
+          <span class="orb-label">THE KING</span>
+        </span>
+      </button>
+
+      <button class="orb" data-id="ak" type="button" aria-label="Open A.K dossier">
+        <span class="orb-core">
+          <span class="orb-name">A.K</span>
+          <span class="orb-label">THE WANDERER</span>
+        </span>
+      </button>
+    </section>
+
+    <footer class="archive-foot">ARCHIVE RECORD // SEALED — DO NOT DISTRIBUTE</footer>
+  </section>
+
+  <!-- ===== View: DOSSIER ===== -->
+  <section id="view-dossier" class="view hidden">
+    <header class="dossier-header">
+      <button id="btn-back" class="btn-ghost" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        RETURN TO ARCHIVE
+      </button>
+      <div class="dossier-code" id="dossier-code">SUBJECT //</div>
+    </header>
+    <div id="dossier-content" class="dossier-body"></div>
+  </section>
+
+  <!-- ===== Restricted-access toast ===== -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
