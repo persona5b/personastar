@@ -486,6 +486,22 @@ body.ja-mode .scanlines { opacity: 1; }
 }
 .brand-mark span { color: var(--ink-dim); font-family: var(--font-body); font-size: 10px; letter-spacing: 0.24em; }
 .session-chip {
+  .header-right { display: flex; align-items: center; gap: 12px; }
+.btn-logout {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  transition: color .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.btn-logout:hover {
+  color: #e08a97;
+  border-color: rgba(224, 69, 95, .4);
+  box-shadow: 0 0 16px rgba(224, 69, 95, .12);
+}
+
   font-size: 10px;
   letter-spacing: 0.22em;
   color: var(--ink-dim);
