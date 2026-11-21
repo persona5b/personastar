@@ -12,7 +12,7 @@
    ------------------------------------------------------------ */
 const CONFIG = (typeof ARCHIVE_CONFIG !== "undefined" && ARCHIVE_CONFIG)
   ? ARCHIVE_CONFIG
-  : { audio: {}, users: [], owner: { name: "OWNER", code: "3005" } };
+  : { audio: {}, users: [], owner: { name: "OWNER", code: "" } };
 
 const CHARACTER_MAP = (typeof CHARACTERS !== "undefined" && CHARACTERS) ? CHARACTERS : {};
 const JA_STAGE_DATA = (typeof JA_STAGES !== "undefined" && JA_STAGES) ? JA_STAGES : [];
@@ -353,30 +353,25 @@ function spawnWelcomeParticles() {
 }
 
 function enterArchive() {
-   function logout() {
+  sessionChip.textContent = "CLEARANCE: " + (session ? session.name.toUpperCase() : "—");
+  showView("archive");
+}
+
+function logout() {
   audio.playClick();
   session = null;
   try {
-    sessionStorage.removeItem(SESSION_KEY);   // hapus sesi login
-    sessionStorage.removeItem(JA_STAGE_KEY);  // reset progres tahap J.A.
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(JA_STAGE_KEY);
   } catch (e) {}
   document.body.classList.remove("ja-mode");
-  document.querySelector(".orb-ja").classList.remove("unlocked");
   sessionChip.textContent = "CLEARANCE: —";
   sessionChip.style.color = "";
   loginFeedback.className = "login-feedback";
   loginFeedback.textContent = "";
   nobelInput.value = "";
-  showView("login");        // balik ke layar login
+  showView("login");
   nobelInput.focus();
-}
-  sessionChip.textContent = "CLEARANCE: " + (session ? session.name.toUpperCase() : "—");
-  if (session && session.owner) sessionChip.style.color = "#e08a97";
-
-  const jaOrb = document.querySelector(".orb-ja");
-  if (session && session.owner) jaOrb.classList.add("unlocked");
-
-  showView("archive");
 }
 
 /* ------------------------------------------------------------
@@ -446,7 +441,7 @@ function drawLines() {
     lineSvg.appendChild(base);
 
     const flow = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    flow.setAttribute("class", "line-flow" + (session && session.owner ? " red" : ""));
+    flow.setAttribute("class", "line-flow red");
     flow.setAttribute("d", d);
     lineSvg.appendChild(flow);
   });
@@ -468,15 +463,6 @@ function initOrbs() {
     orb.addEventListener("click", () => {
       const id = orb.getAttribute("data-id");
       audio.playClick();
-
-      if (id === "ja" && !(session && session.owner)) {
-        showToast("ACCESS RESTRICTED — OWNER CLEARANCE REQUIRED.");
-        orb.classList.remove("shake");
-        void orb.offsetWidth;
-        orb.classList.add("shake");
-        setTimeout(() => orb.classList.remove("shake"), 500);
-        return;
-      }
       openDossier(id);
     });
   });
@@ -508,10 +494,6 @@ function portraitBlock(ch) {
     '<div class="portrait-col">' +
       '<div class="portrait">' +
         '<img src="' + ch.image + '" alt="' + ch.code + ' portrait" onerror="this.style.display=\'none\'">' +
-        '<div class="portrait-fallback">' +
-          '<div class="initials">' + ch.initials + "</div>" +
-          '<div class="placeholder-note"></div>' +
-        "</div>" +
       "</div>" +
       '<div class="portrait-caption">' + ch.caption + "</div>" +
     "</div>"
@@ -598,13 +580,7 @@ function renderJADossier() {
   dossierContent.innerHTML =
     '<div class="dossier-body">' +
       '<div class="portrait-col">' +
-        '<div class="portrait" style="border-color:rgba(224,69,95,.35)">' +
-          '<img src="' + CHARACTER_MAP.ja.image + '" alt="J.A portrait" onerror="this.style.display=\'none\'">' +
-          '<div class="portrait-fallback">' +
-            '<div class="ja-eye" aria-hidden="true"></div>' +
-            '<div class="placeholder-note">SUBJECT OUTSIDE THE SYSTEM</div>' +
-          "</div>" +
-        "</div>" +
+        '<div class="portrait" style="border-color:rgba(224,69,95,.35)"></div>' +
         '<div class="portrait-caption">' + CHARACTER_MAP.ja.caption + "</div>" +
       "</div>" +
       '<div class="dossier-info">' +
@@ -645,10 +621,6 @@ function renderJAFinal(stage) {
       '<div class="portrait-col">' +
         '<div class="portrait" style="border-color:rgba(224,69,95,.45)">' +
           '<img src="' + CHARACTER_MAP.ja.image + '" alt="J.A portrait" onerror="this.style.display=\'none\'">' +
-          '<div class="portrait-fallback">' +
-            '<div class="ja-eye" aria-hidden="true"></div>' +
-            '<div class="placeholder-note">SUBJECT OUTSIDE THE SYSTEM</div>' +
-          "</div>" +
         "</div>" +
         '<div class="portrait-caption">' + CHARACTER_MAP.ja.caption + "</div>" +
       "</div>" +
@@ -691,10 +663,9 @@ function init() {
   starfield.init();
   initLogin();
   initOrbs();
-soundToggle.addEventListener("click", () => audio.toggle());
-$("btn-logout").addEventListener("click", logout);
 
   soundToggle.addEventListener("click", () => audio.toggle());
+  $("btn-logout").addEventListener("click", logout);
 
   window.addEventListener("resize", () => {
     applyOrbLayout();
