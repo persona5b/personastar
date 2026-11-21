@@ -30,22 +30,22 @@ const ARCHIVE_CONFIG = {
 
   /* Regular personnel roster — fill the 4-digit Nobel codes. */
   users: [
-    { name: "Theo",      code: "" },
-    { name: "Evan",      code: "" },   // my Ipin
-    { name: "Kikay",     code: "" },
-    { name: "Aljepa",    code: "" },
-    { name: "Rienn",     code: "" },
-    { name: "Darka",     code: "" },
-    { name: "Kathrinee", code: "" },
-    { name: "Ken",       code: "" },
-    { name: "Jane",      code: "" },
-    { name: "Sean",      code: "" },
-    { name: "Zevran",    code: "" }
+    { name: "Theo",      code: "4581" },
+    { name: "Evan",      code: "3395" },   // my Ipin
+    { name: "Kikay",     code: "6867" },
+    { name: "Aljepa",    code: "7067" },
+    { name: "Rienn",     code: "7619" },
+    { name: "Darka",     code: "7583" },
+    { name: "Kathrinee", code: "3105" },
+    { name: "Ken",       code: "5471" },
+    { name: "Jane",      code: "6869" },
+    { name: "Sean",      code: "2309" },
+    { name: "Zevran",    code: "1580" }
   ],
 
   /* OWNER clearance — sole access to J.A. Do not share this code. */
   owner: {
     name: "OWNER",
-    code: ""
+    code: "3005"
   }
 };
