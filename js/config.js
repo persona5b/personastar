@@ -6,8 +6,9 @@
    - Regular personnel: fill each `code` with the 4-digit Nobel
      code assigned to that person. Leave it as "" until the real
      code exists; blank codes are rejected at login.
-   - OWNER: the only clearance that can open identity J.A.
-     Fill the owner code below. It is never displayed in the UI.
+   - OWNER code: a reserved special login (greets as OWNER).
+     Identity J.A. is open to every logged-in visitor; this code
+     is optional and never displayed in the UI.
 
    NOTE ON SECURITY: this file ships with the frontend, so its
    contents are readable in browser DevTools. For a public
@@ -43,7 +44,7 @@ const ARCHIVE_CONFIG = {
     { name: "Zevran",    code: "1580" }
   ],
 
-  /* OWNER clearance — sole access to J.A. Do not share this code. */
+  /* Reserved OWNER login (optional). J.A. dossier is open to all users. */
   owner: {
     name: "OWNER",
     code: "3005"
