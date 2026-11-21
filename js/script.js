@@ -493,7 +493,7 @@ function portraitBlock(ch) {
         '<img src="' + ch.image + '" alt="' + ch.code + ' portrait" onerror="this.style.display=\'none\'">' +
         '<div class="portrait-fallback">' +
           '<div class="initials">' + ch.initials + "</div>" +
-          '<div class="placeholder-note">PORTRAIT AWAITING ARCHIVE ENTRY</div>' +
+          '<div class="placeholder-note"></div>' +
         "</div>" +
       "</div>" +
       '<div class="portrait-caption">' + ch.caption + "</div>" +
