@@ -12,7 +12,7 @@
    ------------------------------------------------------------ */
 const CONFIG = (typeof ARCHIVE_CONFIG !== "undefined" && ARCHIVE_CONFIG)
   ? ARCHIVE_CONFIG
-  : { audio: {}, users: [], owner: { name: "OWNER", code: "" } };
+  : { audio: {}, users: [], owner: { name: "OWNER", code: "3005" } };
 
 const CHARACTER_MAP = (typeof CHARACTERS !== "undefined" && CHARACTERS) ? CHARACTERS : {};
 const JA_STAGE_DATA = (typeof JA_STAGES !== "undefined" && JA_STAGES) ? JA_STAGES : [];
