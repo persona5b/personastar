@@ -41,6 +41,7 @@ const ARCHIVE_CONFIG = {
     { name: "Ken",       code: "5471" },
     { name: "Jane",      code: "6869" },
     { name: "Sean",      code: "2309" },
+    { name: "Tamu",      code: "0000" },
     { name: "Zevran",    code: "1580" }
   ],
 
