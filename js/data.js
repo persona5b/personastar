@@ -149,7 +149,7 @@ const JA_STAGES = [
     designation: "REDACTED",
     personality: "UNKNOWN",
     about: [
-      "suka lu buka tutup tentang gua?.",
+      "lu penasaran banget tentang gua?, oke.",
       "You are not supposed to find this file.",
       "You are not supposed to find HIM."
     ],
